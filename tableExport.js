@@ -689,6 +689,9 @@
                     $(this).closest('table').data("tableexport-display") == 'always');
           }).find(selector);
 
+          var current_colspan_for_row = []; 
+          current_colspan_for_row[rowIndex] = 0;
+
           $row.each(function (colIndex) {
             if ($(this).data("tableexport-display") == 'always' ||
                 ($(this).css('display') != 'none' &&
@@ -716,6 +719,7 @@
                   // handle colspan of current cell
                   if ($(this).is("[colspan]")) {
                     cs = parseInt($(this).attr('colspan'));
+                    current_colspan_for_row[rowIndex] += cs - 1;
                     for (c = 0; c < cs-1; c++)
                       cellcallback(null, rowIndex, colIndex + c);
                   }
@@ -725,14 +729,18 @@
                     var r, rs = parseInt($(this).attr('rowspan'));
 
                     for (r = 1; r < rs; r++) {
-                      if (typeof rowspans[rowIndex + r] == 'undefined')
+                      if (typeof rowspans[rowIndex + r] == 'undefined') {
                         rowspans[rowIndex + r] = [];
-                      rowspans[rowIndex + r][colIndex] = "";
+                      }
+                      rowspans[rowIndex + r][colIndex + current_colspan_for_row[rowIndex]] = "";
 
-                      for (c = 1; c < cs; c++)
-                        rowspans[rowIndex + r][colIndex + c] = "";
+                      for (c = 1; c < cs; c++) {
+                        rowspans[rowIndex + r][colIndex + current_colspan_for_row[rowIndex] + c] = "";
+                      }
                     }
                   }
+
+
                 }
               }
             }
@@ -806,6 +814,8 @@
         return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
       }
 
+      /** Takes a string and encapsulates it (by default in double-quotes) if it
+       * contains the csv field separator, spaces, or linebreaks. */
       function csvString(cell, rowIndex, colIndex) {
         var result = '';
 

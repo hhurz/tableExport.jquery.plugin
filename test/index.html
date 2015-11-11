@@ -91,6 +91,7 @@
       <li><a href="#" onClick="doExport('#countries', {csvUseBOM: false, type: 'csv'});"> <img src='icons/csv.png' alt="CSV" style="width:24px"> CSV (without BOM)</a></li>
       <li><a href="#" onClick="doExport('#rowspans', {type: 'csv'});"> <img src='icons/csv.png' alt="CSV" style="width:24px"> CSV (rowspan)</a></li>
       <li><a href="#" onClick="doExport('#mixspans', {type: 'csv'});"> <img src='icons/csv.png' alt="CSV" style="width:24px"> CSV (colspan + rowspan)</a></li>
+      <li><a href="#" onClick="doExport('#mixspans2', {type: 'csv'});"> <img src='icons/csv.png' alt="CSV" style="width:24px"> CSV (colspan + rowspan #2)</a></li>
       <li><a href="#" onClick="doExport('#invisiblecols', {type: 'csv'});"> <img src='icons/csv.png' alt="CSV" style="width:24px"> CSV (data-tableexport-display="always")</a></li>
       <li><a href="#" onClick="doExport('#countries', {type: 'txt'});"> <img src='icons/txt.png' alt="TXT" style="width:24px"> TXT</a></li>
       <li><a href="#" onClick="doExport('#invisible', {type: 'txt'});"> <img src='icons/txt.png' alt="TXT" style="width:24px"> TXT (hidden table)</a></li>
@@ -296,6 +297,48 @@
       </tr>
       </tbody>
     </table>
+
+    <h3>Table with rowspan and colspan #2</h3>
+    <table id="mixspans2" class="table-striped numformat">
+      <thead>
+        <tr>
+          <th colspan="2">Section 1</th>
+          <th rowspan="2">T</th>
+          <th>Section 2</th>
+          <th>Section 3</th>
+        </tr>
+        <tr>
+          <th>Q1</th>
+          <th>Q2</th>
+          <th>Q3</th>
+          <th>Q4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>3</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>3</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>3</td>
+          <td>4</td>
+        </tr>
+      </tbody>
+    </table>
+
     <h3>Table containing unexportable cells</h3>
     <table id="hiddencols" class="table-striped numformat">
       <thead>

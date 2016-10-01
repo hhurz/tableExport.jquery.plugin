@@ -18,6 +18,7 @@
         displayTableName: false,
         escape: false,
         excelstyles: [], // e.g. ['border-bottom', 'border-top', 'border-left', 'border-right']
+        useRowStyles: false, // use row styles if td or tr doesn't have any kind of styles when exported to excel
         fileName: 'tableExport',
         htmlContent: false,
         ignoreColumn: [],
@@ -371,57 +372,72 @@
             rowIndex++;
           });
 
-          docData += '</thead><tbody>';
-          // Row Vs Column
-          $rows = $(this).find('tbody').first().find(defaults.tbodySelector);
-          if (defaults.tfootSelector.length)
-            $rows.push ($(el).find('tfoot').find(defaults.tfootSelector));
-          $rows.each(function() {
-            trData = "";
-            ForEachVisibleCell(this, 'td', rowIndex, $hrows.length + $rows.length,
-              function(cell, row, col) {
-                if (cell != null) {
-                  var tdstyle = '';
-                  var tdcss = $(cell).data("tableexport-msonumberformat");
+          docData += '</thead>';
+          // Row Vs Column, support multiple tbodys
+          $tbodys = $(this).find('tbody');
+          $tbodys.each(function() {
+            docData += '<tbody>';
+            $rows = $(this).find(defaults.tbodySelector);
+            if (defaults.tfootSelector.length)
+              $rows.push ($(el).find('tfoot').find(defaults.tfootSelector));
+            $rows.each(function() {
+              trData = "";
+              var trcss = '';
+              var outerRow = this;
+              ForEachVisibleCell(this, 'td', rowIndex, $hrows.length + $rows.length,
+                function(cell, row, col) {
+                  if (cell != null) {
+                    var tdstyle = '';
+                    var tdcss = $(cell).data("tableexport-msonumberformat");
 
-                  if (typeof tdcss == 'undefined' && typeof defaults.onMsoNumberFormat === 'function')
-                    tdcss = defaults.onMsoNumberFormat(cell, row, col);
+                    if (typeof tdcss == 'undefined' && typeof defaults.onMsoNumberFormat === 'function')
+                      tdcss = defaults.onMsoNumberFormat(cell, row, col);
 
-                  if (typeof tdcss != 'undefined' && tdcss != '') {
-                    if (tdstyle == '')
-                      tdstyle = 'style="';
-                    tdstyle = 'style="mso-number-format:\'' + tdcss + '\'';
-                  }
+                    if (typeof tdcss != 'undefined' && tdcss != '') {
+                      if (tdstyle == '')
+                        tdstyle = 'style="';
+                      tdstyle = 'style="mso-number-format:\'' + tdcss + '\'';
+                    }
 
-                  trData += '<td';
-                  for (var styles in defaults.excelstyles) {
-                    if (defaults.excelstyles.hasOwnProperty(styles)) {
-                      tdcss = $(cell).css(defaults.excelstyles[styles]);
-                      if (tdcss != '' && tdcss !='0px none rgb(0, 0, 0)') {
-                        if (tdstyle == '')
-                          tdstyle = 'style="';
-                        tdstyle += defaults.excelstyles[styles] + ':' + tdcss + ';';
+                    trData += '<td';
+                    for (var styles in defaults.excelstyles) {
+                      if (defaults.excelstyles.hasOwnProperty(styles)) {
+                        tdcss = $(cell).css(defaults.excelstyles[styles]);
+                        if (tdcss != '' && tdcss !='0px none rgb(0, 0, 0)' && tdcss != 'rgba(0, 0, 0, 0)') {
+                          if (tdstyle == '')
+                            tdstyle = 'style="';
+                          tdstyle += defaults.excelstyles[styles] + ':' + tdcss + ';';
+                        } else if (defaults.useRowStyles) {
+                          trcss = $(outerRow).css(defaults.excelstyles[styles]);
+                          if (trcss != '' && trcss != '0px none rgb(0, 0, 0)' && trcss != 'rgba(0, 0, 0, 0)') {
+                            if (tdstyle == '')
+                              tdstyle = 'style="';
+                              tdstyle += defaults.excelstyles[styles] + ':' + trcss + ';';
+                          }
+                        }
                       }
                     }
+                    if (tdstyle != '' )
+                      trData += ' ' + tdstyle + '"';
+                    if ($(cell).is("[colspan]"))
+                      trData += ' colspan="' + $(cell).attr('colspan') + '"';
+                    if ($(cell).is("[rowspan]"))
+                      trData += ' rowspan="' + $(cell).attr('rowspan') + '"';
+                    trData += '>' + parseString(cell, row, col) + '</td>';
                   }
-                  if (tdstyle != '' )
-                    trData += ' ' + tdstyle + '"';
-                  if ($(cell).is("[colspan]"))
-                    trData += ' colspan="' + $(cell).attr('colspan') + '"';
-                  if ($(cell).is("[rowspan]"))
-                    trData += ' rowspan="' + $(cell).attr('rowspan') + '"';
-                  trData += '>' + parseString(cell, row, col) + '</td>';
-                }
-              });
-            if (trData.length > 0)
-              docData += '<tr>' + trData + '</tr>';
-            rowIndex++;
+                });
+              if (trData.length > 0)
+                docData += '<tr>' + trData + '</tr>';
+              rowIndex++;
+            });
+
+            if (defaults.displayTableName)
+              docData += '<tr><td></td></tr><tr><td></td></tr><tr><td>' + parseString($('<p>' + defaults.tableName + '</p>')) + '</td></tr>';
+              
+            docData += '</tbody>';
           });
 
-          if (defaults.displayTableName)
-            docData += '<tr><td></td></tr><tr><td></td></tr><tr><td>' + parseString($('<p>' + defaults.tableName + '</p>')) + '</td></tr>';
-
-          docData += '</tbody></table>';
+          docData += '</table>';
 
           if (defaults.consoleLog === true)
             console.log(docData);

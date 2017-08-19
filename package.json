@@ -33,5 +33,11 @@
     "tools",
     "bower.json",
     "tableExport.js"
-  ]
+  ],
+  "devDependencies": {
+    "eslint": "^4.5.0"
+  },
+  "scripts": {
+    "lint": "eslint tableExport.js"
+  }
 }

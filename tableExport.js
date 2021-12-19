@@ -1,7 +1,7 @@
 /**
  * @preserve tableExport.jquery.plugin
  *
- * Version 1.20.2
+ * Version 1.21
  *
  * Copyright (c) 2015-2021 hhurz,
  *   https://github.com/hhurz/tableExport.jquery.plugin
@@ -812,7 +812,7 @@
                   const cellStyles = document.defaultView.getComputedStyle(cell, null);
                   const rowStyles = document.defaultView.getComputedStyle($row[0], null);
 
-                  for (const cssStyle in defaults.mso.styles) {
+                  for (let cssStyle in defaults.mso.styles) {
                     let thCss = cellStyles[defaults.mso.styles[cssStyle]];
                     if (thCss === '')
                       thCss = rowStyles[defaults.mso.styles[cssStyle]];
@@ -864,7 +864,7 @@
                   const cellStyles = document.defaultView.getComputedStyle(cell, null);
                   const rowStyles = document.defaultView.getComputedStyle($row[0], null);
 
-                  for (const cssStyle in defaults.mso.styles) {
+                  for (let cssStyle in defaults.mso.styles) {
                     tdCss = cellStyles[defaults.mso.styles[cssStyle]];
                     if (tdCss === '')
                       tdCss = rowStyles[defaults.mso.styles[cssStyle]];
@@ -1181,7 +1181,7 @@
                   rk = 'a0';
                   ro = 'l';
                 }
-                for (const key in pageFormats) {
+                for (let key in pageFormats) {
                   if (pageFormats.hasOwnProperty(key)) {
                     if (pageFormats[key][1] > w) {
                       rk = key;
@@ -1872,7 +1872,7 @@
       }
 
       if (typeof teOptions.images !== 'undefined') {
-        for (const i in teOptions.images)
+        for (let i in teOptions.images)
           if (teOptions.images.hasOwnProperty(i))
             loadImage(teOptions.images[i]);
       }
@@ -3184,7 +3184,7 @@
         table: jsPdfTable,
         cursor: jsPdfCursor
       };
-      for (const prop in additionalData) {
+      for (let prop in additionalData) {
         if (additionalData.hasOwnProperty(prop)) {
           data[prop] = additionalData[prop];
         }
@@ -3282,8 +3282,8 @@
     }
   }
 
-  class jsPdfTableClass {
-    constructor() {
+  var jsPdfTableClass = /** class */ (function () {
+    function jsPdfTableClass() { /** constructor */
       this.height = 0;
       this.width = 0;
       this.x = 0;
@@ -3294,10 +3294,11 @@
       this.headerRow = null;
       this.settings = {};
     }
-  }
+    return jsPdfTableClass;
+  }());
 
-  class jsPdfRowClass {
-    constructor(raw) {
+  var jsPdfRowClass = /** class */ (function () {
+    function jsPdfRowClass(raw) { /** constructor */
       this.raw = raw || {};
       this.index = 0;
       this.styles = {};
@@ -3305,10 +3306,11 @@
       this.height = 0;
       this.y = 0;
     }
-  }
+    return jsPdfRowClass;
+  }());
 
-  class jsPdfCellClass {
-    constructor(raw) {
+  var jsPdfCellClass = /** class */ (function () {
+    function jsPdfCellClass(raw) { /** constructor */
       this.raw = raw;
       this.styles = {};
       this.text = '';
@@ -3319,10 +3321,11 @@
       this.x = 0;
       this.y = 0;
     }
-  }
+    return jsPdfCellClass;
+  }());
 
-  class jsPdfColumnClass {
-    constructor(dataKey) {
+  var jsPdfColumnClass = /** class */ (function () {
+    function jsPdfColumnClass(dataKey) { /** constructor */
       this.dataKey = dataKey;
       this.options = {};
       this.styles = {};
@@ -3330,6 +3333,7 @@
       this.width = 0;
       this.x = 0;
     }
-  }
+    return jsPdfColumnClass;
+  }());
 
 })(jQuery);

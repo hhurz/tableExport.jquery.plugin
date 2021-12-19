@@ -1,6 +1,6 @@
 {
   "name": "tableexport.jquery.plugin",
-  "version": "1.20.2",
+  "version": "1.21",
   "description": "html table export",
   "main": "tableExport.js",
   "authors": [
@@ -17,7 +17,6 @@
   "homepage": "https://github.com/hhurz/tableExport.jquery.plugin",
   "dependencies": {
     "jquery": ">=1.9.1",
-    "es6-promise": ">=4.2.4",
     "file-saver": ">=2.0.1",
     "html2canvas": "*",
     "jspdf": ">=2.0.0",

@@ -32,6 +32,12 @@ To export the table in XLSX (Excel 2007+ XML Format) format, you need to include
 <script type="text/javascript" src="libs/js-xlsx/xlsx.core.min.js"></script>
 ```
 
+In case you still want to support IE11, you need to include jsPDF's polyfills.umd.js.
+Please do this before you include jspdf.umd.min.js and html2canvas.min.js
+```html
+<script type="text/javascript" src="../libs/jsPDF/polyfills.umd.js"></script>
+```
+
 To export an html table to a PDF file, you can use jsPDF as a PDF producer:
 
 ```html
@@ -56,8 +62,6 @@ Many HTML stylings can be converted to PDF with jsPDF, but support for non-weste
 To export the table in PNG format, you need to include:
 
 ```html
-<!-- For IE support include es6-promise before html2canvas -->
-<script type="text/javascript" src="libs/es6-promise/es6-promise.auto.min.js"></script>
 <script type="text/javascript" src="libs/html2canvas/html2canvas.min.js"></script>
 ```
 
@@ -77,7 +81,6 @@ Dependencies
 Library | Version
 --------|--------
 [jQuery](https://github.com/jquery/jquery) | \>= 1.9.1
-[es6-promise](https://github.com/stefanpenner/es6-promise) | \>= 4.2.4
 [FileSaver](https://github.com/eligrey/FileSaver.js) | \>= 2.0.1
 [html2canvas](https://github.com/niklasvh/html2canvas) | \>= 1.0.0
 [jsPDF](https://github.com/MrRio/jsPDF) | \>=2.0.0

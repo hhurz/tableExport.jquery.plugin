@@ -1745,6 +1745,8 @@
       try {
         const blob = doc.output('blob')
         saveAs(blob, defaults.fileName + '.pdf');
+         if (typeof defaults.onAfterSaveToFile === "function")
+                    defaults.onAfterSaveToFile();
       } catch (e) {
         downloadFile(defaults.fileName + '.pdf',
           'data:application/pdf' + (hasimages ? '' : ';base64') + ',',

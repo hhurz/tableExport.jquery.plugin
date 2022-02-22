@@ -1745,6 +1745,8 @@
       try {
         const blob = doc.output('blob')
         saveAs(blob, defaults.fileName + '.pdf');
+         if (typeof defaults.onAfterSaveToFile === 'function')
+            defaults.onAfterSaveToFile(data, fileName);
       } catch (e) {
         downloadFile(defaults.fileName + '.pdf',
           'data:application/pdf' + (hasimages ? '' : ';base64') + ',',
@@ -2562,7 +2564,6 @@
         try {
           blob = new Blob([data], {type: type + ';charset=' + charset});
           saveAs(blob, fileName, bom === false);
-
           if (typeof defaults.onAfterSaveToFile === 'function')
             defaults.onAfterSaveToFile(data, fileName);
         } catch (e) {

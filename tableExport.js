@@ -1742,11 +1742,16 @@
         return;
       }
 
+      const fileName = defaults.fileName + '.pdf';
+
       try {
         const blob = doc.output('blob')
-        saveAs(blob, defaults.fileName + '.pdf');
+        saveAs(blob, fileName);
+
+        if (typeof defaults.onAfterSaveToFile === 'function')
+          defaults.onAfterSaveToFile(blob, fileName);
       } catch (e) {
-        downloadFile(defaults.fileName + '.pdf',
+        downloadFile(fileName,
           'data:application/pdf' + (hasimages ? '' : ';base64') + ',',
           hasimages ? doc.output('blob') : doc.output());
       }

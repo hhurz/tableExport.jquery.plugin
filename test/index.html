@@ -158,6 +158,18 @@
       return result;
     }
 
+    function DoOnXmlCellData(cell, row, col, data) {
+      if (data == null || data.length === 0) {
+        return data;
+      }
+      return data
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+    }
+
     /**
      * @return {number}
      */
@@ -228,6 +240,9 @@
       <br>
       <li><a href="#" onClick="doExport('#countries', {type: 'xml'});"> <img src='icons/xml.png' alt="XML" style="width:24px"> XML</a></li>
       <li><a href="#" onClick="doExport('#issue124', {type: 'xml'});"> <img src='icons/xml.png' alt="XML" style="width:24px"> XML (issue124: Multiple lines)</a></li>
+      <li><a href="#" onClick="doExport('#issue124', {type: 'xml', onCellData: DoOnXmlCellData});"> <img src='icons/xml.png' alt="XML" style="width:24px"> XML export using onCellData (Issue 345: Invalid XML content)</a></li>
+      <li><a href="#" onClick="doExport('#issue124', {type: 'xml', onCellHtmlData: DoOnXmlCellData});"> <img src='icons/xml.png' alt="XML" style="width:24px"> XML export using onCellHtmlData (Issue 345: Invalid XML content)</a></li>
+      <br>
       <li><a href="#" onClick="doExport('#countries', {type: 'sql'});"> <img src='icons/sql.png' alt="SQL" style="width:24px"> SQL</a></li>
       <li><a href="#" onClick="doExport('#issue124', {type: 'sql'});"> <img src='icons/sql.png' alt="SQL" style="width:24px"> SQL (issue124: Multiple lines)</a></li>
       <br>
@@ -1275,7 +1290,7 @@
       </tr>
       <tr>
         <td>C</td>
-        <td><span>Text content</span></td>
+        <td><span>Text with "unsafe" characters: &lt;&amp;&gt;</span></td>
       </tr>
       <tr>
         <td>D</td>

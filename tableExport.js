@@ -2389,18 +2389,18 @@
           let v = parseString(elt, _R, _C + CSOffset, cellInfo);
           let o = {t: 's', v: v};
           let _t = '';
-          const cellFormat = $(elt).attr('data-tableexport-cellformat') || '';
+          const cellFormat = $(elt).attr('data-tableexport-cellformat') || undefined;
 
           if (cellFormat !== '') {
             ssfId = parseInt($(elt).attr('data-tableexport-xlsxformatid') || 0);
 
             if (ssfId === 0 &&
-              typeof defaults.mso.xslx.formatId.numbers === 'function')
-              ssfId = defaults.mso.xslx.formatId.numbers($(elt), _R, _C + CSOffset);
+              typeof defaults.mso.xlsx.formatId.numbers === 'function')
+              ssfId = defaults.mso.xlsx.formatId.numbers($(elt), _R, _C + CSOffset);
 
             if (ssfId === 0 &&
-              typeof defaults.mso.xslx.formatId.date === 'function')
-              ssfId = defaults.mso.xslx.formatId.date($(elt), _R, _C + CSOffset);
+              typeof defaults.mso.xlsx.formatId.date === 'function')
+              ssfId = defaults.mso.xlsx.formatId.date($(elt), _R, _C + CSOffset);
 
             if (ssfId === 49 || ssfId === '@')
               _t = 's';
@@ -2434,8 +2434,8 @@
             }
             else if (_t === 'n' || isFinite(xlsxToNumber(v, defaults.numbers.output))) { // yes, defaults.numbers.output is right
               const vn = xlsxToNumber(v, defaults.numbers.output);
-              if (ssfId === 0 && typeof defaults.mso.xslx.formatId.numbers !== 'function') {
-                ssfId = defaults.mso.xslx.formatId.numbers;
+              if (ssfId === 0 && typeof defaults.mso.xlsx.formatId.numbers !== 'function') {
+                ssfId = defaults.mso.xlsx.formatId.numbers;
               }
               if (isFinite(vn) || isFinite(v))
                 o = {
@@ -2445,8 +2445,8 @@
                 };
             }
             else if ((vd = parseDateUTC(v)) !== false || _t === 'd') {
-              if (ssfId === 0 && typeof defaults.mso.xslx.formatId.date !== 'function') {
-                ssfId = defaults.mso.xslx.formatId.date;
+              if (ssfId === 0 && typeof defaults.mso.xlsx.formatId.date !== 'function') {
+                ssfId = defaults.mso.xlsx.formatId.date;
               }
               o = {
                 t: 'd',

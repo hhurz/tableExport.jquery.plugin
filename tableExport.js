@@ -2081,7 +2081,7 @@
             $cell.data('teUserDefText', 1);
           }
           else if (htmlData !== '') {
-            const html = $.parseHTML(htmlData);
+            const html = $.parseHTML('<div>' + htmlData + '</div>', null, false);
             let inputIndex = 0;
             let selectIndex = 0;
 

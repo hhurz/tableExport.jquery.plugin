@@ -80,7 +80,7 @@ Dependencies
 
 Library | Version
 --------|--------
-[jQuery](https://github.com/jquery/jquery) | \>= 1.9.1
+[jQuery](https://github.com/jquery/jquery) | \>= 3.2.1
 [FileSaver](https://github.com/eligrey/FileSaver.js) | \>= 2.0.1
 [html2canvas](https://github.com/niklasvh/html2canvas) | \>= 1.0.0
 [jsPDF](https://github.com/MrRio/jsPDF) | \>=2.0.0

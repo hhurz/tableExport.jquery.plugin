@@ -82,8 +82,13 @@
         worksheetName: '',
         xlsx: {                         // Specific Excel 2007 XML format settings:
           formatId: {                   // XLSX format (id) used to format excel cells. See readme.md: data-tableexport-xlsxformatid
-            date: 14,                   // formatId or format string (e.g. 'm/d/yy') or function(cell, row, col) {return formatId}
-            numbers: 2                  // formatId or format string (e.g. '\"T\"\ #0.00') or function(cell, row, col) {return formatId}
+            date: 14,                   // The default format id, or a format string (e.g. 'm/d/yy'), or a function(cell, row, col)
+            numbers: 2,                 // The default Format id, or a format string (e.g. '\"T\"\ #0.00'), or a function(cell, row, col)
+            currency: 164               // This id is used by "data-tableexport-xlsxformatid" to allow you to export a cell in currency format (see below)
+          },
+          format: {
+            currency: '$#,##0.00;[Red]-$#,##0.00' // The format string to be used for the export for the currency format 
+                                                  // Euro format: '#,##0.00 €;[Red](#,##0.00) €'
           },
           onHyperlink: null             // function($cell, row, col, href, content, hyperlink): Return what to export for hyperlinks
         }
@@ -2441,7 +2446,10 @@
                 o = {
                   t: 'n',
                   v: (isFinite(vn) ? vn : v),
-                  z: (typeof ssfId === 'string') ? ssfId : (ssfId in ssfTable ? ssfTable[ssfId] : '0.00')
+                  z: (typeof ssfId === 'string') ? ssfId :
+                      (ssfId in ssfTable ? ssfTable[ssfId] :
+                          ssfId === defaults.mso.xlsx.formatId.currency ? defaults.mso.xlsx.format.currency :
+                              '0.00')
                 };
             }
             else if ((vd = parseDateUTC(v)) !== false || _t === 'd') {

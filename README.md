@@ -216,6 +216,8 @@ mso: fileFormat: 'xlshtml'
      worksheetName: ''
      xlsx: formatId: date: 14
                      numbers: 2
+                     currency: 164
+           format: currency: '$#,##0.00;[Red]-$#,##0.00'
            onHyperlink: null
 numbers: html: decimalMark: '.'
                thousandsSeparator: ','
@@ -368,36 +370,37 @@ Optional html data attributes
 <td data-tableexport-xlsxformatid="14">...</td> -> The data value represents a format id that will be used to format the content of a cell in Excel. This data attribute overwrites the default setting of defaults.mso.xslx.formatId. 
                                                    This attribute is for Excel 2007 Office Open XML format only.
                                                    
-                                                   Format id           Description
-                                                   ===============================================
-                                                   "1"                 0
-                                                   "2"                 0.00
-                                                   "3"                 #,##0
-                                                   "4"                 #,##0.00
-                                                   "9"                 0%
-                                                   "10"                0.00%
-                                                   "11"                0.00E+00
-                                                   "12"                # ?/?
-                                                   "13"                # ??/??
-                                                   "14"                m/d/yy (will be localized by Excel)
-                                                   "15"                d-mmm-yy
-                                                   "16"                d-mmm
-                                                   "17"                mmm-yy
-                                                   "18"                h:mm AM/PM
-                                                   "19"                h:mm:ss AM/PM
-                                                   "20"                h:mm
-                                                   "21"                h:mm:ss
-                                                   "22"                m/d/yy h:mm
-                                                   "37"                #,##0 ;(#,##0)
-                                                   "38"                #,##0 ;[Red](#,##0)
-                                                   "39"                #,##0.00;(#,##0.00)
-                                                   "40"                #,##0.00;[Red](#,##0.00)
-                                                   "45"                mm:ss
-                                                   "46"                [h]:mm:ss
-                                                   "47"                mmss.0
-                                                   "48"                ##0.0E+0
-                                                   "49"                @
-                                                   "56"                上午/下午 hh時mm分ss秒
+                                                   Format id                    Description
+                                                   ===============================================================
+                                                   "1"                          0
+                                                   "2"                          0.00
+                                                   "3"                          #,##0
+                                                   "4"                          #,##0.00
+                                                   "9"                          0%
+                                                   "10"                         0.00%
+                                                   "11"                         0.00E+00
+                                                   "12"                         # ?/?
+                                                   "13"                         # ??/??
+                                                   "14"                         m/d/yy (will be localized by Excel)
+                                                   "15"                         d-mmm-yy
+                                                   "16"                         d-mmm
+                                                   "17"                         mmm-yy
+                                                   "18"                         h:mm AM/PM
+                                                   "19"                         h:mm:ss AM/PM
+                                                   "20"                         h:mm
+                                                   "21"                         h:mm:ss
+                                                   "22"                         m/d/yy h:mm
+                                                   "37"                         #,##0 ;(#,##0)
+                                                   "38"                         #,##0 ;[Red](#,##0)
+                                                   "39"                         #,##0.00;(#,##0.00)
+                                                   "40"                         #,##0.00;[Red](#,##0.00)
+                                                   "45"                         mm:ss
+                                                   "46"                         [h]:mm:ss
+                                                   "47"                         mmss.0
+                                                   "48"                         ##0.0E+0
+                                                   "49"                         @
+                                                   "56"                         上午/下午 hh時mm分ss秒
+                                                   {mso.xlsx.formatid.currency} {mso.xlsx.format.currency}
 ```
 
 Support

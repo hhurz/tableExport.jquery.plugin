@@ -249,7 +249,7 @@
       <li><a href="#" onClick="doExport('#countries', {type: 'xlsx', htmlHyperlink: 'content'});"> <img src='icons/xls.png' alt="XLSX" style="width:24px"> XLSX</a></li>
       <li><a href="#" onClick="doExport('#rowspans', {type: 'excel', mso: {fileFormat: 'xlsx'}});"> <img src='icons/xls.png' alt="XLSX" style="width:24px"> XLSX data types</a></li>
       <li><a href="#" onClick="doExport('#issue45', {type: 'xlsx', onCellHtmlData: DoOnCellHtmlData, numbers: {html: {decimalMark: ',', thousandsSeparator: '.'}, output: {decimalMark: '.', thousandsSeparator: ''}}});"> <img src='icons/xls.png' alt="XLSX" style="width:24px"> XLSX (tableexport-cellformat)</a></li>
-      <li><a href="#" onClick="doExport('#issue81', {type: 'xlsx', onCellData: DoOnXlsxCellData});"> <img src='icons/xls.png' alt="XLSX" style="width:24px"> XLSX (Issue 193: Number format)</a></li>
+      <li><a href="#" onClick="doExport('#issue81', {type: 'xlsx', onCellData: DoOnXlsxCellData});"> <img src='icons/xls.png' alt="XLSX" style="width:24px"> XLSX (Issue 81: Number format)</a></li>
       <li><a href="#" onClick="doExport('#mixspans', {type: 'xlsx'});"> <img src='icons/xls.png' alt="XLSX" style="width:24px"> XLSX (colspan + rowspan)</a></li>
       <li><a href="#" onClick="doExport('#issue93', {type: 'xlsx', ignoreColumn: [4,7],ignoreRow: [4,8]});"> <img src='icons/xls.png' alt="XLSX" style="width:24px"> XLSX (Issue 93: colspan & rowspan)</a></li>
       <li><a href="#" onClick="doExport('table', {type: 'excel', mso: {fileFormat: 'xlsx'}});"> <img src='icons/xls.png' alt="XLS" style="width:24px"> XLSX (multiple tables)</a></li>
@@ -1150,6 +1150,7 @@
       <thead>
       <tr>
         <th>Number as text</th>
+        <th>Currency</th>
         <th>Number</th>
         <th>Long Number</th>
       </tr>
@@ -1157,16 +1158,19 @@
       <tbody>
       <tr>
         <td data-tableexport-msonumberformat="\@">1,357,805.84</td>
+        <td data-tableexport-xlsxformatid="164">1.84</td>
         <td>00212704</td>
         <td data-tableexport-msonumberformat="0">370911202104140038</td>
       </tr>
       <tr>
         <td>00212336</td>
+        <td data-tableexport-xlsxformatid="164">12.123</td>
         <td data-tableexport-msonumberformat="\#\,\#\#0\.00_ \;\[Red\]\-\#\,\#\#0\.00\ ">-212336</td>
         <td>370911202104140025</td>
       </tr>
       <tr>
         <td>00212347</td>
+        <td data-tableexport-xlsxformatid="164">1357805.84</td>
         <td>1357805,84</td>
         <td>370911202104130330</td>
       </tr>

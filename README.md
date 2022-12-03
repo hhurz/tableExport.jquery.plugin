@@ -402,8 +402,3 @@ Optional html data attributes
                                                    "56"                         上午/下午 hh時mm分ss秒
                                                    {mso.xlsx.formatid.currency} {mso.xlsx.format.currency}
 ```
-
-Support
-=======
-The IDE used in the development of this project is supported by [JetBrains](https://jb.gg/OpenSource).
-<div><img alt="https://jb.gg/OpenSource" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" style="width: 130px"></div>

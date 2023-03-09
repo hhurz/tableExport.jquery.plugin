@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang=ko>
+  <head>
+    <meta charset="utf-8">
+    <title>Issue 363: korean is broken</title>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../libs/FileSaver/FileSaver.min.js"></script>
+    <script type="text/javascript" src="../libs/jsPDF/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="../tableExport.js"></script>
+
+    <style type="text/css">
+      <!--
+      caption {
+        font-size: 1em;
+        white-space: nowrap;
+        text-align: left;
+      }
+
+      table  {
+        border-collapse: collapse;
+        margin-top: 2em;
+      }
+
+      table > thead > tr > td,
+      table > thead > tr > th {
+        background-color: gray;
+        border: 1px solid #efefef;
+        color: white;
+        padding: 0.2rem;
+      }
+
+      table > tbody > tr > td {
+        border: 1px solid #999;
+        padding: 0.2rem;
+      }
+      -->
+    </style>
+    <script type="text/javaScript">
+
+    function doExport(selector, params) {
+      var options = {
+        tableName: 'Table name'
+      };
+
+      $.extend(true, options, params);
+      $(selector).tableExport(options);
+    }
+
+    function doDocCreated(doc) {
+      // Replace ... with base64 encoded font, e.g malgun.ttf
+      const _fonts = "...";
+
+      if (_fonts === "...") {
+        alert ("Missing base64 encoded font, e.g malgun.ttf");
+        return;
+      }
+        
+      doc.addFileToVFS('malgun.ttf', _fonts);
+      doc.addFont('malgun.ttf', 'malgun', 'normal');
+      doc.setFont('malgun'); 
+      
+      doc.text(15, 120, '안녕하세요'); // Example text output
+    }
+
+    </script>
+  </head>
+  <body>
+  <p>
+    <a href="#" onClick="doExport('#issue363',
+                    {type: 'pdf',
+                     jspdf: {orientation: 'l',
+                             onDocCreated: doDocCreated,
+                             autotable: {startY: 10,
+                                         margin: {left: 10, top: 10},
+                                         pageBreak: 'avoid'
+                                         }
+                     }
+                    });">
+    <img src='icons/pdf.png' alt="PDF" style="width:24px"> PDF (jsPDF)</a>
+  </p>
+  <table id="issue363" class="">
+    <caption>Issue 363: Korean pdf export</caption>
+    <thead>
+    <tr>
+       <th>안녕하세요</th>
+       <th>안녕하세요</th>
+       <th>안녕하세요</th>
+    </thead>
+    <tbody>
+     <tr>
+       <td>안녕하세요</td><td>안녕하세요</td><td>안녕하세요</td>
+     </tr>
+     <tr>
+       <td>안녕하세요</td><td>안녕하세요</td><td>안녕하세요</td>
+     </tr>
+     <tr>
+       <td>안녕하세요</td><td>안녕하세요</td><td>안녕하세요</td>
+     </tr>
+    </tbody>
+  </table>
+  </body>
+</html>

@@ -1,9 +1,9 @@
 /**
  * @preserve tableExport.jquery.plugin
  *
- * Version 1.26.0
+ * Version 1.27.0
  *
- * Copyright (c) 2015-2022 hhurz,
+ * Copyright (c) 2015-2023 hhurz,
  *   https://github.com/hhurz/tableExport.jquery.plugin
  *
  * Based on https://github.com/kayalshri/tableExport.jquery.plugin
@@ -211,10 +211,10 @@
       'plain': {header: {fontStyle: 'bold'}}
     };
 
-    const jsPdfDefaultStyles = { // Base style for all themes
+    let jsPdfDefaultStyles = { // Base style for all themes
       cellPadding: 5,
       fontSize: 10,
-      font: "helvetica",         // helvetica, times, courier
+      fontName: "helvetica",     // helvetica, times, courier, malgun
       lineColor: 200,
       lineWidth: 0.1,
       fontStyle: 'normal',       // normal, bold, italic, bolditalic
@@ -1168,7 +1168,7 @@
         // pdf output using jsPDF AutoTable plugin
         // https://github.com/simonbengtsson/jsPDF-AutoTable
 
-        const teOptions = defaults.jspdf.autotable.tableExport;
+        let teOptions = defaults.jspdf.autotable.tableExport;
 
         // When setting jspdf.format to 'bestfit' tableExport tries to choose
         // the minimum required paper format and orientation in which the table
@@ -1208,14 +1208,16 @@
         // thus it can be accessed from any callback function
         if (teOptions.doc == null) {
           teOptions.doc = new jspdf.jsPDF(defaults.jspdf.orientation,
-            defaults.jspdf.unit,
-            defaults.jspdf.format);
+                                          defaults.jspdf.unit,
+                                          defaults.jspdf.format);
           teOptions.wScaleFactor = 1;
           teOptions.hScaleFactor = 1;
 
           if (typeof defaults.jspdf.onDocCreated === 'function')
             defaults.jspdf.onDocCreated(teOptions.doc);
         }
+
+        jsPdfDefaultStyles.fontName = teOptions.doc.getFont().fontName;
 
         if (teOptions.outputImages === true)
           teOptions.images = {};
@@ -1490,7 +1492,7 @@
             if (typeof teOptions.onBeforeAutotable === 'function')
               teOptions.onBeforeAutotable($(this), teOptions.columns, teOptions.rows, atOptions);
 
-            jsPdfAutoTable(teOptions.doc, teOptions.columns, teOptions.rows, atOptions);
+            jsPdfAutoTable(atOptions.tableExport.doc, teOptions.columns, teOptions.rows, atOptions);
 
             // onAfterAutotable: optional callback function after returning
             // from jsPDF AutoTable that can be used to modify the AutoTable options
@@ -2744,7 +2746,8 @@
       const userStyles = {
         textColor: 30, // Setting text color to dark gray as it can't be obtained from jsPDF
         fontSize: jsPdfDoc.internal.getFontSize(),
-        fontStyle: jsPdfDoc.internal.getFont().fontStyle
+        fontStyle: jsPdfDoc.internal.getFont().fontStyle,
+        fontName: jsPdfDoc.internal.getFont().fontName
       };
 
       // Create the table model with its columns, rows and cells

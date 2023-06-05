@@ -1,7 +1,7 @@
 /**
  * @preserve tableExport.jquery.plugin
  *
- * Version 1.27.0
+ * Version 1.28.0
  *
  * Copyright (c) 2015-2023 hhurz,
  *   https://github.com/hhurz/tableExport.jquery.plugin
@@ -806,6 +806,7 @@
         $head_rows = collectHeadRows($table);
         $($head_rows).each(function () {
           const $row = $(this);
+          const rowStyles = document.defaultView.getComputedStyle($row[0], null);
           trData = '';
           ForEachVisibleCell(this, 'th,td', rowIndex, $head_rows.length,
             function (cell, row, col) {
@@ -815,15 +816,15 @@
                 trData += '<th';
                 if (defaults.mso.styles.length) {
                   const cellStyles = document.defaultView.getComputedStyle(cell, null);
-                  const rowStyles = document.defaultView.getComputedStyle($row[0], null);
 
                   for (let cssStyle in defaults.mso.styles) {
-                    let thCss = cellStyles[defaults.mso.styles[cssStyle]];
+                    const stylePropertyName = defaults.mso.styles[cssStyle];
+                    let thCss = getStyle(cellStyles, stylePropertyName);
                     if (thCss === '')
-                      thCss = rowStyles[defaults.mso.styles[cssStyle]];
+                      thCss = getStyle(rowStyles, stylePropertyName);
                     if (thCss !== '' && thCss !== '0px none rgb(0, 0, 0)' && thCss !== 'rgba(0, 0, 0, 0)') {
                       thStyle += (thStyle === '') ? 'style="' : ';';
-                      thStyle += defaults.mso.styles[cssStyle] + ':' + thCss;
+                      thStyle += stylePropertyName + ':' + thCss;
                     }
                   }
                 }
@@ -851,6 +852,8 @@
         $rows = collectRows($table);
         $($rows).each(function () {
           const $row = $(this);
+          let cellStyles = null;
+          let rowStyles = null;
           trData = '';
           ForEachVisibleCell(this, 'td,th', rowIndex, $head_rows.length + $rows.length,
             function (cell, row, col) {
@@ -866,17 +869,21 @@
                   tdStyle = 'style="mso-number-format:\'' + tdCss + '\'';
 
                 if (defaults.mso.styles.length) {
-                  const cellStyles = document.defaultView.getComputedStyle(cell, null);
-                  const rowStyles = document.defaultView.getComputedStyle($row[0], null);
+                  cellStyles = document.defaultView.getComputedStyle(cell, null);
+                  rowStyles = null;
 
                   for (let cssStyle in defaults.mso.styles) {
-                    tdCss = cellStyles[defaults.mso.styles[cssStyle]];
-                    if (tdCss === '')
-                      tdCss = rowStyles[defaults.mso.styles[cssStyle]];
+                    const stylePropertyName = defaults.mso.styles[cssStyle];
+                    tdCss = getStyle(cellStyles, stylePropertyName);
 
+                    if (tdCss === '') {
+                      if (rowStyles === null)
+                        rowStyles = document.defaultView.getComputedStyle($row[0], null);
+                      tdCss = getStyle(rowStyles, stylePropertyName);
+                    }
                     if (tdCss !== '' && tdCss !== '0px none rgb(0, 0, 0)' && tdCss !== 'rgba(0, 0, 0, 0)') {
                       tdStyle += (tdStyle === '') ? 'style="' : ';';
-                      tdStyle += defaults.mso.styles[cssStyle] + ':' + tdCss;
+                      tdStyle += stylePropertyName + ':' + tdCss;
                     }
                   }
                 }
@@ -914,8 +921,8 @@
 
       //noinspection XmlUnusedNamespaceDeclaration
       let docFile = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' + MSDocSchema + ' xmlns="http://www.w3.org/TR/REC-html40">';
-      docFile += '<meta http-equiv="content-type" content="application/vnd.ms-' + MSDocType + '; charset=UTF-8">';
       docFile += '<head>';
+      docFile += '<meta http-equiv="content-type" content="application/vnd.ms-' + MSDocType + '; charset=UTF-8">';
       if (MSDocType === 'excel') {
         docFile += '<!--[if gte mso 9]>';
         docFile += '<xml>';
@@ -2290,7 +2297,12 @@
       try {
         if (window.getComputedStyle) { // gecko and webkit
           prop = prop.replace(/([a-z])([A-Z])/, hyphenate);  // requires hyphenated, not camel
-          return window.getComputedStyle(target, null).getPropertyValue(prop);
+
+          if (typeof target === 'object' && target.nodeType !== undefined)
+            return window.getComputedStyle(target, null).getPropertyValue(prop);
+          if (typeof target === 'object' && target.length)
+            return target.getPropertyValue(prop);
+          return '';
         }
         if (target.currentStyle) { // ie
           return target.currentStyle[prop];

@@ -1,11 +1,11 @@
 {
   "name": "tableexport.jquery.plugin",
-  "version": "1.27.0",
+  "version": "1.28.0",
   "description": "html table export",
   "main": "tableExport.min.js",
   "dependencies": {
     "jquery": ">=3.2.1",
-    "file-saver": ">=2.0.1",
+    "file-saver": ">=2.0.4",
     "html2canvas": ">=1.0.0",
     "jspdf": ">=2.0.0",
     "pdfmake": "^0.1.71",

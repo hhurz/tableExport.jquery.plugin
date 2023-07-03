@@ -2587,8 +2587,11 @@
 
       if (saveIt) {
         try {
-          blob = new Blob([data], {type: type + ';charset=' + charset});
-          saveAs(blob, fileName, bom === false);
+          if (bom)
+            blob = new Blob([String.fromCharCode(0xFEFF), [data]], { type: type + ';charset=' + charset});
+          else
+            blob = new Blob([data], {type: type + ';charset=' + charset});
+          saveAs(blob, fileName, {autoBom: false});
 
           if (typeof defaults.onAfterSaveToFile === 'function')
             defaults.onAfterSaveToFile(data, fileName);

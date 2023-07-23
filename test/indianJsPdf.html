@@ -2,7 +2,7 @@
 <html lang=ko>
   <head>
     <meta charset="utf-8">
-    <title>Issue 363: korean is broken</title>
+    <title>Issue 369: Indian Currency Not Showing In Pdf Export</title>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="../libs/FileSaver/FileSaver.min.js"></script>
@@ -49,23 +49,23 @@
 
     function doDocCreated(doc) {
       // In the next line replace <base64> with a base64 encoded font, 
-      // e.g GowunDodum-Regular.ttf from Google Fonts family "Gowun Dodum".
-      // To do this, you need to upload your Korean font to a Base64 file encoder 
+      // e.g Hind-Regular.ttf from Google Fonts family "Hind".
+      // To do this, you need to upload your Indian font to a Base64 file encoder 
       // and use its output in place of <base64> while preserving the apostrophes
       // so it would look similar like this:
-      // const _fonts = "AAEAAAAQAQAABAAAR0RFRtwiqrwAAAIUAAABzEdQT1OlZYtBA ... sBHBcKLy4BERYQAR4VAAAA";
+      // const _fonts = "AAEAAAARAQAABAAQR0RFRkN6Q0gAAAMAAAAAxEdQT1Mmhse6AA ... kUBu/5FAbtAAAA=";
       const _fonts = "<base64>";
 
       if (_fonts === "<base64>") {
-        alert ("Missing base64 encoded font, e.g GowunDodum-Regular.ttf");
+        alert ("Missing base64 encoded font, e.g Hind-Regular.ttf");
         return;
       }
-        
-      doc.addFileToVFS('GowunDodum-Regular.ttf', _fonts);
-      doc.addFont('GowunDodum-Regular.ttf', 'GowunDodum-Regular', 'normal');
-      doc.setFont('GowunDodum-Regular'); 
-      
-      doc.text(15, 120, '안녕하세요'); // Example text output
+
+      doc.addFileToVFS('Hind-Regular.ttf', _fonts);
+      doc.addFont('Hind-Regular.ttf', 'Hind-Regular', 'normal');
+      doc.setFont('Hind-Regular');
+
+      doc.text(15, 120, 'नमस्ते'); // Example text output
     }
 
     </script>
@@ -84,23 +84,23 @@
                     });">
     <img src='icons/pdf.png' alt="PDF" style="width:24px"> PDF (jsPDF)</a>
   </p>
-  <table id="issue363" class="">
-    <caption>Issue 363: Korean pdf export</caption>
+  <table id="issue369" class="">
+    <caption>Issue 369: Indian Currency Not Showing In Pdf Export</caption>
     <thead>
     <tr>
-       <th>안녕하세요</th>
-       <th>안녕하세요</th>
-       <th>안녕하세요</th>
+       <th>नमस्ते</th>
+       <th>नमस्ते</th>
+       <th>नमस्ते</th>
     </thead>
     <tbody>
      <tr>
-       <td>안녕하세요</td><td>안녕하세요</td><td>안녕하세요</td>
+       <td>नमस्ते</td><td>नमस्ते</td><td>₹500</td>
      </tr>
      <tr>
-       <td>안녕하세요</td><td>안녕하세요</td><td>안녕하세요</td>
+       <td>नमस्ते</td><td>नमस्ते</td><td>₹600</td>
      </tr>
      <tr>
-       <td>안녕하세요</td><td>안녕하세요</td><td>안녕하세요</td>
+       <td>नमस्ते</td><td>नमस्ते</td><td>₹8000</td>
      </tr>
     </tbody>
   </table>

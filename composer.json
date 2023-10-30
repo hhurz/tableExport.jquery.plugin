@@ -1,0 +1,38 @@
+{
+  "name": "hhurz/tableexport.jquery.plugin",
+  "description": "Export HTML table to CSV, DOC, JSON, PDF, PNG, SQL, TSV, TXT, XLS, XLSX, XML",
+  "keywords": [
+      "html5",
+      "javascript",
+      "jquery",
+      "export",
+      "table"
+  ],
+  "type": "component",
+  "homepage": "https://github.com/hhurz/tableExport.jquery.plugin",
+  "license": "MIT",
+  "authors": [
+      {
+        "name": "hhurz"
+      }
+  ],
+  "require": {
+      "components/jquery": "^3.2.1"
+  },
+  "extra": {
+    "component": {
+      "scripts": [
+        "tableExport.js"
+      ],
+      "files": [
+        "tableExport.js",
+        "tableExport.min.js",
+        "libs/FileSaver/*",
+        "libs/html2canvas/*",
+        "libs/js-xlsx/*",
+        "libs/jsPDF/*",
+        "libs/pdfmake/*"
+      ]
+    }
+  }
+}

@@ -1,9 +1,9 @@
 /**
  * @preserve tableExport.jquery.plugin
  *
- * Version 1.28.0
+ * Version 1.29.0
  *
- * Copyright (c) 2015-2023 hhurz,
+ * Copyright (c) 2015-2024 hhurz,
  *   https://github.com/hhurz/tableExport.jquery.plugin
  *
  * Based on https://github.com/kayalshri/tableExport.jquery.plugin
@@ -135,7 +135,10 @@
             font: 'Roboto'              // Default font is 'Roboto' which needs vfs_fonts.js to be included
           }                             // To export arabic characters include mirza_fonts.js _instead_ of vfs_fonts.js
         },                              // For a chinese font include either gbsn00lp_fonts.js or ZCOOLXiaoWei_fonts.js _instead_ of vfs_fonts.js
-        fonts: {}
+        fonts: {},
+        widths: '*',                    // '*' - divides the available width equally among all columns,
+                                        // 'auto' - dynamically adjust the width of all columns based on the content,
+                                        // [] - an array with different types of values according to the description for column widths of pdfmake
       },
       preserve: {
         leadingWS: false,               // preserve leading white spaces
@@ -1015,9 +1018,16 @@
         }).each(function () {
           const $table = $(this);
 
-          const widths = [];
+          let widths = [];
+          let colWidth = '*';
           const body = [];
           rowIndex = 0;
+
+          if (typeof defaults.pdfmake.widths === 'string' && (defaults.pdfmake.widths.trim() === '*' || defaults.pdfmake.widths.trim() === 'auto')) {
+            colWidth = defaults.pdfmake.widths.trim();
+          } else if (Array.isArray(defaults.pdfmake.widths)) {
+            widths = defaults.pdfmake.widths;
+          }
 
           /**
            * @return {number}
@@ -1068,7 +1078,7 @@
           let colcount = CollectPdfmakeData($head_rows, 'th,td', $head_rows.length);
 
           for (let i = widths.length; i < colcount; i++)
-            widths.push('*');
+            widths.push(colWidth);
 
           // Data
           $rows = collectRows($table);
@@ -1076,7 +1086,7 @@
           colcount = CollectPdfmakeData($rows, 'td', $head_rows.length + $rows.length);
 
           for (let i = widths.length; i < colcount; i++)
-            widths.push('*');
+            widths.push(colWidth);
 
           docDefinition.content.push({ table: {
                                           headerRows: $head_rows.length ? $head_rows.length : null,

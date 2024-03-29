@@ -35,16 +35,21 @@ To export the table in XLSX (Excel 2007+ XML Format) format, you need to include
 In case you still want to support IE11, you need to include jsPDF's polyfills.umd.js.
 Please do this before you include jspdf.umd.min.js and html2canvas.min.js
 ```html
-<script type="text/javascript" src="../libs/jsPDF/polyfills.umd.js"></script>
+<script type="text/javascript" src="libs/jsPDF/polyfills.umd.js"></script>
 ```
 
-To export an html table to a PDF file, you can use jsPDF as a PDF producer:
+To export an html table to a PDF file, the plugin utilizes various PDF producers to generate PDF files from HTML tables.
+A popular JavaScript library for generating PDF files from HTML content is jsPDF: 
 
 ```html
 <script type="text/javascript" src="libs/jsPDF/jspdf.umd.min.js"></script>
 ```
 
-Many HTML stylings can be converted to PDF with jsPDF, but support for non-western character sets is almost non-existent. Especially if you want to export Arabic or Chinese characters to your PDF file, you can use pdfmake as an alternative PDF producer. The disadvantage compared to jspdf is that using pdfmake has a reduced styling capability. To use pdfmake enable the pdfmake option and instead of the jsPDF files include    
+Many HTML stylings can be converted to PDF with jsPDF, but support for non-western character sets is almost non-existent.<br>
+Especially if you want to export Arabic or Chinese characters to your PDF file, you can use pdfmake as an alternative PDF producer.<br>
+The disadvantage compared to jsPDF is that using pdfmake has a reduced styling capability.
+
+To use pdfmake enable the pdfmake option and <u>instead</u> of the jsPDF files include    
 
 ```html
 <script type="text/javascript" src="libs/pdfmake/pdfmake.min.js"></script>
@@ -114,7 +119,7 @@ $('table').tableExport({type:'excel',
 ```
 
 ```javascript
-// PDF export using jsPDF only
+// PDF export using jsPDF's core html support
 
 $('#tableID').tableExport({type:'pdf',
                            jspdf: {orientation: 'p',
@@ -124,7 +129,7 @@ $('#tableID').tableExport({type:'pdf',
 ```
 
 ```javascript
-// PDF format using jsPDF and jsPDF Autotable 
+// PDF format using jsPDF Autotable 
 
 $('#tableID').tableExport({type:'pdf',
                            jspdf: {orientation: 'l',
@@ -138,7 +143,7 @@ $('#tableID').tableExport({type:'pdf',
 ```
 
 ```javascript
-// PDF format with callback example
+// PDF format using jsPDF Autotable with callback example
 
 function DoCellData(cell, row, col, data) {}
 function DoBeforeAutotable(table, headers, rows, AutotableSettings) {}
@@ -159,7 +164,8 @@ $('table').tableExport({fileName: sFileName,
 
 $('#tableID').tableExport({type:'pdf',
                            pdfmake:{enabled:true,
-                                    docDefinition:{pageOrientation:'landscape'}}
+                                    docDefinition:{pageOrientation:'landscape'},
+                                    widths: 'auto'}
                           });
 ```
 
@@ -245,6 +251,7 @@ pdfmake: enabled: false
                                       fontSize: 8
                                       font: 'Roboto'
          fonts: {}
+         widths: '*'
 preserve: leadingWS: false
           trailingWS: false
 preventInjection: true
@@ -281,19 +288,33 @@ When exporting in Excel 2000 html format (xlshtml), the default extension of the
 ```The file you are trying to open, 'name.ext', is in a different format than specified by the file extension. Verify that the file is not corrupted and is from a trusted source before opening the file. Do you want to open the file now?```
 According to a [Knowledge base article](https://support.microsoft.com/en-us/help/948615/error-opening-file-the-file-format-differs-from-the-format-that-the-fi) the warning message can help prevent unexpected problems that might occur because of possible incompatibility between the actual content of the file and the file name extension. The article also gives you some hints to disable the warning message.
 
-### PDF format related options
-For jsPDF options see the documentation of [jsPDF](https://github.com/MrRio/jsPDF). To generate tables with jsPDF this plugin uses a specific modified version (2.0.17) of [jsPDF-AutoTable](https://github.com/simonbengtsson/jsPDF-AutoTable). Due to compatibility reasons the source code of this version has been integrated and was adapted.
+### jsPDF related options
+For jsPDF options see the documentation of [jsPDF](https://github.com/MrRio/jsPDF).
+To generate tables with jsPDF this plugin uses a specific modified version (2.0.17) of [jsPDF-AutoTable](https://github.com/simonbengtsson/jsPDF-AutoTable).
+Due to compatibility reasons the source code of this version has been integrated and was adapted.
+The jsPDF-AutoTable - plugin therefore no longer needs to be included additionally.
+You can disable the autotable functionality by setting the jsPDF option ``` autotable ``` to false.
 
 There is an extended setting for the jsPDF option ``` format ```. If you set the value of the option to ``bestfit``, the tableExport plugin will try to choose the minimum required paper size and orientation in which the table (or tables in multitable mode) can be displayed without column adjustment.
 
 Also there is an extended setting for the jsPDF-AutoTable options ``` 'fillColor', 'textColor' and 'fontStyle'```. When setting these option values to ``` 'inherit' ``` the original css values for background and text color will be used as fill and text color while exporting to pdf. A css font-weight >= 700 results in a bold fontStyle and the italic css font-style will be used as italic fontStyle.
 
-When exporting to pdf the option ``` outputImages ``` lets you enable or disable the output of images that are located in the original html table.
+By setting the autotable option ``` outputImages ``` you can enable or disable the output of images that are located in the original html table.
+
+### pdfmake related options 
+The ``` docDefinition ``` object of the pdfmake options contains various properties to define the content, styles, layout, and other aspects of the PDF document. You can customize these properties according to your requirements to generate PDFs with different structures and appearances. For further information see the [pdfmake](https://pdfmake.github.io/docs/0.1/) documentation.
+
+In the pdfmake options, the ``` widths ``` parameter can accept various types of values:
+
+- `'*'`: You can use the string '*' (default setting) to distribute the available width evenly among all columns. This results in all columns having the same width.<br>
+- `'auto'`: You can use the string 'auto' to automatically adjust the width of each column based on the content within it. This allows pdfmake to dynamically calculate the width of each column to fit the content.<br>
+- `Numeric Array`: You can provide an array of numeric values representing the width of each column in points. For example, [100, 200, 300] would set the widths of the three columns to 100, 200, and 300 points respectively.<br>
+- `Percentage String Array`: You can specify column widths as percentages by providing an array of strings with percentage values. For example, ['20%', '30%', '50%'] would allocate 20% of the available width to the first column, 30% to the second column, and 50% to the third column.<br>
 
 
 Optional html data attributes
 =============================
-(can be applied while generating the table that you want to export)
+These attributes can be applied while generating the table that you want to export.
 
 <h4>data-tableexport-cellformat</h4>
 

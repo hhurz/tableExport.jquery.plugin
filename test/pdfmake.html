@@ -64,7 +64,7 @@
           <img src='icons/pdf.png' alt="PDF" style="width:24px"> PDF (pdfmake colspan & rowspan)</a>
         </li>
         <li>
-          <a href="#" onClick="$('#countries, #mixspans').tableExport({type:'pdf',pdfmake:{enabled:true,docDefinition:{pageOrientation:'landscape'}}});">
+          <a href="#" onClick="$('#countries, #mixspans, #colalignment').tableExport({type:'pdf',pdfmake:{enabled:true,docDefinition:{pageOrientation:'landscape'}, widths: ['*']}});">
             <img src='icons/pdf.png' alt="PDF" style="width:24px"> PDF (multiple tables)</a>
         </li>
       </ul>
@@ -297,6 +297,33 @@
         <td>1</td>
         <td>2</td>
         <td>3</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h3>Table with different col alignment</h3>
+    <table id="colalignment">
+      <caption>Table with different col alignment</caption>
+      <thead>
+      <tr>
+        <td width="30" aria-hidden="true">&nbsp;</td>
+        <th style="text-align: left; width: 150px" scope="col" tabindex="0">Description</th>
+        <th style="text-align: right; width: 100px" scope="col" tabindex="0">Value 1</th>
+        <th style="text-align: right; width: 100px" scope="col" tabindex="0">Value 2</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td width="30" aria-hidden="true">&nbsp;</td>
+        <td style="text-align: left" tabindex="0">Not available</td>
+        <td style="text-align: right" tabindex="0">0</td>
+        <td style="text-align: right" tabindex="0">0</td>
+      </tr>
+      <tr>
+        <td width="30" aria-hidden="true">&nbsp;</td>
+        <td>&nbsp;</td>
+        <td style="text-align: right" tabindex="0">0</td>
+        <td style="text-align: right" tabindex="0">0</td>
       </tr>
       </tbody>
     </table>

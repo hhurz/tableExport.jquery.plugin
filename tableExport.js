@@ -1,7 +1,7 @@
 /**
  * @preserve tableExport.jquery.plugin
  *
- * Version 1.29.0
+ * Version 1.30.0
  *
  * Copyright (c) 2015-2024 hhurz,
  *   https://github.com/hhurz/tableExport.jquery.plugin
@@ -1043,14 +1043,29 @@
                     let cellContent;
 
                     if (typeof cell !== 'undefined' && cell !== null) {
-                      const colspan = getColspan(cell);
-                      const rowspan = getRowspan(cell);
+                      const cs = getCellStyles(cell);
+                      const clamp = (val) => Math.min(255, Math.max(0, val));
+                      const toHex = (val) => {
+                        const hex = clamp(val).toString(16);
+                        return hex.length === 1 ? '0' + hex : hex;
+                      };
 
-                      cellContent = {text: parseString(cell, row, col) || ' '};
+                      cellContent = {
+                        text: parseString(cell, row, col) || ' ',
+                        alignment: cs.style.align,
+                        backgroundColor: '#' + toHex(cs.style.bcolor[0]) + toHex(cs.style.bcolor[1]) + toHex(cs.style.bcolor[2]),
+                        color: '#' + toHex(cs.style.color[0]) + toHex(cs.style.color[1]) + toHex(cs.style.color[2])
+                      };
 
-                      if (colspan > 1 || rowspan > 1) {
-                        cellContent['colSpan'] = colspan || 1;
-                        cellContent['rowSpan'] = rowspan || 1;
+                      if (cs.style.fstyle.includes('italic'))
+                        cellContent['fontStyle'] = 'italic';
+
+                      if (cs.style.fstyle.includes('bold'))
+                        cellContent['bold'] = true;
+
+                      if (cs.colspan > 1 || cs.rowspan > 1) {
+                        cellContent['colSpan'] = cs.colspan || 1;
+                        cellContent['rowSpan'] = cs.rowspan || 1;
                       }
                     } else
                       cellContent = {text: ' '};
@@ -1074,17 +1089,13 @@
           };
 
           $head_rows = collectHeadRows($table);
-
-          let colcount = CollectPdfmakeData($head_rows, 'th,td', $head_rows.length);
-
-          for (let i = widths.length; i < colcount; i++)
-            widths.push(colWidth);
+          let head_colcount = CollectPdfmakeData($head_rows, 'th,td', $head_rows.length);
 
           // Data
           $rows = collectRows($table);
+          let body_colcount = CollectPdfmakeData($rows, 'td', $head_rows.length + $rows.length);
 
-          colcount = CollectPdfmakeData($rows, 'td', $head_rows.length + $rows.length);
-
+          let colcount = head_colcount > body_colcount ? head_colcount : body_colcount;
           for (let i = widths.length; i < colcount; i++)
             widths.push(colWidth);
 

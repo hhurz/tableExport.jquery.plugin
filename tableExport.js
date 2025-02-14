@@ -1,9 +1,9 @@
 /**
  * @preserve tableExport.jquery.plugin
  *
- * Version 1.30.0
+ * Version 1.31.0
  *
- * Copyright (c) 2015-2024 hhurz,
+ * Copyright (c) 2015-2025 hhurz,
  *   https://github.com/hhurz/tableExport.jquery.plugin
  *
  * Based on https://github.com/kayalshri/tableExport.jquery.plugin

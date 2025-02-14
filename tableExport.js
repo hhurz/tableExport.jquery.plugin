@@ -1015,7 +1015,7 @@
 
         $(el).filter(function () {
           return isVisible($(this));
-        }).each(function () {
+        }).each(function (tableIndex) {
           const $table = $(this);
 
           let widths = [];
@@ -1118,7 +1118,7 @@
                                                         defaults.pdfmake.docDefinition.styles.alternateRow.fillColor :
                                                         null; }
                                         },
-                                        pageBreak: docDefinition.content.length ? "before" : undefined
+                                        pageBreak: tableIndex > 0 ? "before" : undefined
                                      });
         }); // ...for each table
 

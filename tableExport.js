@@ -1044,8 +1044,8 @@
 
                     if (typeof cell !== 'undefined' && cell !== null) {
                       const cs = getCellStyles(cell);
-                      const clamp = (val) => Math.min(255, Math.max(0, val));
-                      const toHex = (val) => {
+                      const clamp = function(val) {return Math.min(255, Math.max(0, val)); };
+                      const toHex = function(val) {
                         const hex = clamp(val).toString(16);
                         return hex.length === 1 ? '0' + hex : hex;
                       };
@@ -2453,23 +2453,23 @@
           } else
             _t = 's';
 
-          if (v != null) {
+          if (v !== null && v !== undefined) {
             let vd;
 
-            if (v.length === 0) {
+            if (typeof v === 'string' && v.length === 0) {
               o.t = 'z';
             }
-            else if (v.trim().length === 0) {
+            else if (typeof v === 'string' && v.trim().length === 0) {
             }
             else if (_t === 's') {
             }
             else if (cellInfo.type === 'function') {
               o = {f: v};
             }
-            else if (v === 'TRUE') {
+            else if (typeof v === 'string' && v.toUpperCase() === 'TRUE') {
               o = {t: 'b', v: true};
             }
-            else if (v === 'FALSE') {
+            else if (typeof v === 'string' && v.toUpperCase() === 'FALSE') {
               o = {t: 'b', v: false};
             }
             else if (_t === 'n' || isFinite(xlsxToNumber(v, defaults.numbers.output))) { // yes, defaults.numbers.output is right

@@ -1,7 +1,7 @@
 /**
  * @preserve tableExport.jquery.plugin
  *
- * Version 1.32.0
+ * Version 1.33.0
  *
  * Copyright (c) 2015-2025 hhurz,
  *   https://github.com/hhurz/tableExport.jquery.plugin
@@ -153,7 +153,7 @@
       tfootSelector: 'tr',              // Set empty ('') to prevent export of tfoot rows
       theadSelector: 'tr',
       tableName: 'Table',
-      type: 'csv'                       // Export format: 'csv', 'tsv', 'txt', 'sql', 'json', 'xml', 'excel', 'doc', 'png' or 'pdf'
+      type: 'csv'                       // Export format: 'csv', 'tsv', 'txt', 'markdown', 'sql', 'json', 'xml', 'excel', 'doc', 'png' or 'pdf'
     };
 
     const pageFormats = { // Size in pt of various paper formats. Adopted from jsPDF.
@@ -394,6 +394,112 @@
         '',
         (defaults.type === 'csv' && defaults.csvUseBOM));
 
+      } else if (defaults.type === 'markdown') {
+        let markdownTable = '';
+        const $head_rows = collectHeadRows($(el));
+        const $rows = collectRows($(el));
+    
+        // Function to generate a single table in Markdown format
+        function generateMarkdownTable($table) {
+            let tableMarkdown = '';
+            const $head_rows = collectHeadRows($table);
+            const $rows = collectRows($table);
+            const hasHeader = $head_rows.length > 0;
+    
+            // Header row (if present)
+            let headerRow = '|';
+            let separatorRow = '|';
+            if (hasHeader) {
+                $($head_rows).each(function () {
+                    ForEachVisibleCell(this, 'th,td', rowIndex, $head_rows.length,
+                        function (cell, row, col) {
+                            let cellText = parseString(cell, row, col);
+                            // Handle special characters and <br>-tags
+                            cellText = cellText
+                                .replace(/\|/g, '\\|') 
+                                .replace(/-/g, '\\-') 
+                                .replace(/\*/g, '\\*')
+                                .replace(/_/g, '\\_')
+                                .replace(/\#/g, '\\#');
+                            cellText = cellText.replace(/<br\s*\/?>/gi, ' ');
+                            cellText = cellText.replace(/\r/g, '').replace(/\t/g, '    ').replace(/\n/g, ' ');
+                            cellText = $.trim(cellText);
+                            headerRow += ' ' + cellText + ' |';
+                        });
+                    rowIndex++;
+                });
+            } else {
+                // Generate an "empty" header if no header rows are present
+                const firstDataRow = $rows[0];
+                if (firstDataRow) {
+                    ForEachVisibleCell(firstDataRow, 'td', rowIndex, $rows.length,
+                        function (cell, row, col) {
+                            headerRow += ' ' + ' |';
+                        });
+                }
+            }
+    
+            // Separator row
+            separatorRow = '|';
+            for (let i = 0; i < headerRow.split('|').length - 2; i++) {
+                separatorRow += ' --- |'; // Standard separator line for Markdown tables
+            }
+    
+            // Add header and separator to the table
+            if (hasHeader || $rows.length > 0) {
+                tableMarkdown += headerRow + '\n' + separatorRow + '\n';
+            }
+    
+            // Data rows
+            $($rows).each(function () {
+                let dataRow = '|';
+                ForEachVisibleCell(this, 'td', rowIndex, $rows.length,
+                    function (cell, row, col) {
+                        let cellText = parseString(cell, row, col);
+                        cellText = cellText
+                            .replace(/\|/g, '\\|')
+                            .replace(/-/g, '\\-')
+                            .replace(/\*/g, '\\*')
+                            .replace(/_/g, '\\_')
+                            .replace(/\#/g, '\\#');
+                        cellText = cellText.replace(/<br\s*\/?>/gi, ' ');
+                        cellText = cellText.replace(/\r/g, '').replace(/\t/g, '    ').replace(/\n/g, ' ');
+                        cellText = $.trim(cellText);
+                        dataRow += ' ' + cellText + ' |';
+                    });
+                if (dataRow !== '|') { // Check if the row is empty
+                    tableMarkdown += dataRow + '\n';
+                }
+                rowIndex++;
+            });
+    
+            return tableMarkdown;
+        }
+    
+        // Export all tables and add a separator line
+        $(el).filter(function () {
+            return isVisible($(this));
+        }).each(function () {
+            const tableMarkdown = generateMarkdownTable($(this));
+            markdownTable += tableMarkdown;
+    
+            // Add a separator line unless it's the last table
+            if ($(el).index(this) < $(el).length - 1) {
+                markdownTable += '\n\n'; // Two blank lines as a separator
+            }
+        });
+    
+        // Output
+        if (defaults.outputMode === 'string')
+            return markdownTable;
+        if (defaults.outputMode === 'base64')
+            return base64encode(markdownTable);
+        saveToFile(markdownTable,
+            defaults.fileName + '.md',
+            'text/markdown',
+            'utf-8',
+            '',
+            false);
     } else if (defaults.type === 'sql') {
 
       // Header

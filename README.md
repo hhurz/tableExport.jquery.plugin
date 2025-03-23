@@ -6,6 +6,7 @@ tableExport.jquery.plugin
 <li> CSV
 <li> DOC
 <li> JSON
+<li> Markdown
 <li> PDF
 <li> PNG
 <li> SQL

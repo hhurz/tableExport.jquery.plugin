@@ -231,6 +231,13 @@
       <li><a href="#" onClick="doExport('#countries', {type: 'txt', ignoreColumn: ['flag','population']});"> <img src='icons/txt.png' alt="TXT" style="width:24px"> TXT (ignoreColumn by column name)</a></li>
       <li><a href="#" onClick="doExport('#issue285', {type: 'txt', htmlHyperlink: 'content'});"> <img src='icons/txt.png' alt="TXT" style="width:24px"> TXT (issue285: Multiple Hyperlinks)</a></li>
       <br>
+      <li><a href="#" onClick="doExport('#issue40', {type: 'markdown', markdown: {combineHeaderRows: true}});"> <img src='icons/txt.png' alt="markdown" style="width:24px"> MD</a></li>
+      <li><a href="#" onClick="doExport('#wikitable', {type: 'markdown', markdown: {tableAlignment: 'left'}});"> <img src='icons/txt.png' alt="markdown" style="width:24px"> MD (large table)</a></li>
+      <li><a href="#" onClick="doExport('#countries', {type: 'markdown', markdown: {combineHeaderRows: true}, ignoreColumn: [1,3]});"> <img src='icons/txt.png' alt="markdown" style="width:24px"> MD (ignoreColumn by column index)</a></li>
+      <li><a href="#" onClick="doExport('#countries', {type: 'markdown', ignoreColumn: ['flag','population']});"> <img src='icons/txt.png' alt="markdown" style="width:24px"> MD (ignoreColumn by column name)</a></li>
+      <li><a href="#" onClick="doExport('#issue285', {type: 'markdown', htmlHyperlink: 'content'});"> <img src='icons/txt.png' alt="markdown" style="width:24px"> MD (issue285: Multiple Hyperlinks)</a></li>
+      <li><a href="#" onClick="doExport('table', {type: 'markdown', markdown: {tablePadding: true}});"> <img src='icons/txt.png' alt="markdown" style="width:24px"> MD (multiple tables)</a></li>
+      <br>
       <li><a href="#" onClick="doExport('#countries', {type: 'json'});"> <img src='icons/json.png' alt="JSON" style="width:24px"> JSON</a></li>
       <li><a href="#" onClick="doExport('#countries', {type: 'json', ignoreColumn: [2,3]});"> <img src='icons/json.png' alt="JSON" style="width:24px"> JSON (ignore column)</a></li>
       <li><a href="#" onClick="doExport('#countries', {type: 'json', escape: 'true'});"> <img src='icons/json.png' alt="JSON" style="width:24px"> JSON (with escape)</a></li>

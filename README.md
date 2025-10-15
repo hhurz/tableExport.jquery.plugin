@@ -1,3 +1,7 @@
+# THIS PROJECT IS DEPRECATED
+tableExport.jquery.plugin is not maintained anymore.
+
+
 tableExport.jquery.plugin
 =========================
 
